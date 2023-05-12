@@ -6,11 +6,11 @@ const bigWavesFolder = gui.addFolder("Large Waves");
 const smallWavesFolder = gui.addFolder("Small Waves");
 const colorFolder = gui.addFolder("Colors");
 const debugObject = {
-  waveDepthColor: "#1e4d40",
-  waveSurfaceColor: "#4d9aaa",
+  waveDepthColor: "#cad100",
+  waveSurfaceColor: "#002588",
   fogNear: 1,
   fogFar: 3,
-  fogColor: "#8e99a2" };
+  fogColor: "#0b0092" };
 
 
 /**
