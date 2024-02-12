@@ -1,21 +1,31 @@
-MIT License
+*** UA ***
+
+MIT License - Версія 1.0
+
+Авторське право (c) 2024 Ihor Koliasa
+
+Дозволяється безкоштовне використання та розповсюдження даного програмного забезпечення та асоційованого з ним документаційного матеріалу (далі - "Програмне забезпечення"), за умови, що ви отримали копію цієї ліцензії та пов'язаного з нею авторського зазначення. Без обмеження загальності попереднього, ви погоджуєтеся, що ви не будете використовувати Програмне забезпечення для будь-яких нелегальних або зловмисних цілей.
+
+Ви зобов'язуєтеся не копіювати, не модифікувати, не зловживати, не розповсюджувати, не продавати, не ліцензувати, не передавати, не надавати доступ або не використовувати будь-яким іншим чином Програмне забезпечення або його частини третім особам без попереднього письмового дозволу Автора.
+
+Ви також зобов'язуєтеся приймати всі можливі заходи для запобігання витоку даних, пов'язаних з Програмним забезпеченням, включаючи, але не обмежуючись, використання шифрування, обмеження доступу та інші заходи безпеки.
+
+ПРОГРАМНЕ ЗАБЕЗПЕЧЕННЯ НАДАЄТЬСЯ "ЯК ВОНО Є", БЕЗ ЯКИХ-НЕБУДЬ ГАРАНТІЙ, ВИРАЗНИХ ЧИ ПРИТАЄМНИХ, ВКЛЮЧАЮЧИ, АЛЕ НЕ ОБМЕЖУЮЧИСЬ, ГАРАНТІЇ ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ ТА ПРИДАТНОСТІ ДЛЯ ПЕВНОЇ МЕТИ. АВТОРИ АБО ВЛАСНИКИ АВТОРСЬКИХ ПРАВ НЕ БЕРУТЬ НА СЕБЕ ВІДПОВІДАЛЬНІСТЬ ЗА БУДЬ-ЯКІ ВИХІДНІ, ВИПАДКОВІ, ПОСЛІДОВНІ ЧИ ЗАХИСТНІ ЗБИТКИ АБО ЗАХИСТНІ ВІДГОМОГИ, ЩО ВИТІКАЮТЬ З ВИКОРИСТАННЯ АБО НЕМОЖЛИВОСТІ ВИКОРИСТАННЯ ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ ЧИ ПОВ'ЯЗАНИХ З НИМ ІНШИХ ОБ'ЄКТІВ.
+
+Зміни до цієї ліцензії можуть бути внесені тільки за письмового згоди Автора.
+
+*** EN ***
+
+MIT License - Version 1.0
 
 Copyright (c) 2024 Ihor Koliasa
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You agree not to copy, modify, abuse, distribute, sell, license, transfer, or otherwise use the Software or any portion thereof for any illegal or malicious purpose.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+You also agree to take all possible measures to prevent data leakage associated with the Software, including but not limited to the use of encryption, access restrictions, and other security measures.
+
+THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Changes to this license may only be made with the written consent of the Author.
