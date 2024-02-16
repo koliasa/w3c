@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:geo="http://www.google.com/geo/schemas/sitemap/1.0">
-				<url>
-					<loc>/locations.kml</loc>
-					<lastmod>2024-02-16T21:51:56+00:00</lastmod>
-					<priority>1</priority>
-				</url>
-			</urlset>
