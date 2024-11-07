@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Koliasa radio test App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        text-align: center;
+      }
+      #micButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      #micButton:active {
+        background-color: #45a049;
+      }
+      #micStatus {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Koliasa radio test App</h1>
+    <p>Hold the button to talk. Release to stop.</p>
+    <button id="micButton">Press and Hold to Talk</button>
+    <p id="micStatus">Microphone is OFF</p>
+
+    <script>
+      let micButton = document.getElementById("micButton");
+      let micStatus = document.getElementById("micStatus");
+      let isRecording = false;
+      let mediaRecorder;
+      let audioStream;
+      let socket = new WebSocket("wss://echo.websocket.org");
+
+      function updateMicStatus() {
+        if (isRecording) {
+          micStatus.textContent = "Microphone is ON";
+        } else {
+          micStatus.textContent = "Microphone is OFF";
+        }
+      }
+
+      micButton.addEventListener("mousedown", startRecording);
+      micButton.addEventListener("touchstart", startRecording);
+      micButton.addEventListener("mouseup", stopRecording);
+      micButton.addEventListener("touchend", stopRecording);
+
+      function startRecording() {
+        if (isRecording) return;
+        navigator.mediaDevices
+          .getUserMedia({ audio: true })
+          .then(function (stream) {
+            audioStream = stream;
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = function (e) {
+              socket.send(e.data);
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            updateMicStatus();
+          })
+          .catch(function (err) {
+            console.error("Error accessing microphone:", err);
+            alert("Please grant access to the microphone.");
+          });
+      }
+
+      function stopRecording() {
+        if (!isRecording) return;
+        mediaRecorder.stop();
+        audioStream.getTracks().forEach((track) => track.stop());
+        isRecording = false;
+        updateMicStatus();
+      }
+
+      socket.onopen = function () {
+        console.log("Connected to WebSocket server.");
+      };
+
+      socket.onmessage = function (event) {
+        console.log("Received audio data.");
+      };
+
+      socket.onerror = function (error) {
+        console.error("WebSocket Error: ", error);
+      };
+
+      socket.onclose = function () {
+        console.log("WebSocket connection closed.");
+      };
+    </script>
+  </body>
+</html>
