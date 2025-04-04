@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  background: radial-gradient(circle, #001f54 0%, #000 70%);
+  background-image: url("sky1.jpg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.logo-text {
+  font-size: 10vw;
+  font-weight: 700;
+  display: flex;
+  gap: 1vw;
+  background: linear-gradient(90deg, #0057b7, #ffd700);
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: color 0.3s ease, background 0.3s ease;
+  position: absolute;
+  z-index: 100; /* Відображати поверх інших елементів */
+}
+
+.logo-text span {
+  cursor: pointer;
+}
+
+.logo-text span:hover {
+  color: hsl(calc(360 * var(--hue)), 70%, 60%);
+  --hue: calc(1 + var(--hue, 0));
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 14vw;
+    gap: 2vw;
+  }
+}
+
+.webgl {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+.k1 {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  color: white;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn {
+  position: fixed;
+  bottom: 20px;
+  transform: translateY(-50%);
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.btn-left {
+  left: 30px;
+}
+
+.btn-right {
+  right: 30px;
+}
