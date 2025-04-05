@@ -21,10 +21,11 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
-  font-size: 24px;
-  font-weight: 700;
+  font-family: "Mrs Saint Delafield", cursive;
+  font-size: 50px;
+  font-weight: normal;
   display: flex;
-  gap: 4px;
+  gap: 6px;
   background: linear-gradient(90deg, #0057b7, #ffd700);
   -webkit-background-clip: text;
   color: transparent;
