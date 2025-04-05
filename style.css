@@ -18,32 +18,27 @@ body {
 }
 
 .logo-text {
-  font-size: 10vw;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
   font-weight: 700;
   display: flex;
-  gap: 1vw;
+  gap: 4px;
   background: linear-gradient(90deg, #0057b7, #ffd700);
   -webkit-background-clip: text;
   color: transparent;
-  transition: color 0.3s ease, background 0.3s ease;
-  position: absolute;
-  z-index: 100; /* Відображати поверх інших елементів */
+  z-index: 100;
 }
 
 .logo-text span {
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .logo-text span:hover {
   color: hsl(calc(360 * var(--hue)), 70%, 60%);
   --hue: calc(1 + var(--hue, 0));
-}
-
-@media (max-width: 768px) {
-  .logo-text {
-    font-size: 14vw;
-    gap: 2vw;
-  }
 }
 
 .webgl {

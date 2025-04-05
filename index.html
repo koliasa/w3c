@@ -28,7 +28,16 @@
         }
       }
     </script>
-
+    <script>
+      document.querySelectorAll(".logo-text span").forEach((letter) => {
+        letter.addEventListener("mouseenter", () => {
+          letter.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        });
+        letter.addEventListener("mouseleave", () => {
+          letter.style.color = "transparent";
+        });
+      });
+    </script>
     <script type="module" src="script.js"></script>
   </body>
 </html>
