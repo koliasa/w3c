@@ -7,7 +7,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Montserrat", sans-serif;
+
   background: radial-gradient(circle, #001f54 0%, #000 70%);
   background-image: url("sky1.jpg");
   display: flex;
