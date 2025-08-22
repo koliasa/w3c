@@ -1,44 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!--обовязково добавити сюди мета теги. таповн й опис сторінки.-->
     <meta charset="UTF-8" />
-    <title>Koliasa construction</title>
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap" rel="stylesheet" />
+    <title>Dell PE R750 (210-R750-8380)</title>
+    <meta name="COMPUTE ENGINE" />
+    <meta name="keywords" content="COMPUTE ENGINE, >High-Performance, Scalable VMs, 100 Gbps, Internet connection" />
+    <link rel="stylesheet" href="Welcome/css/style.css" />
   </head>
   <body>
-    <div class="webgl"></div>
-    <div class="k1" id="fullscreenBtn"></div>
-
-    <!-- Напис "KOLIASA" -->
-    <div class="logo-text">
-      <span>K</span>
-      <span>o</span>
-      <span>l</span>
-      <span>i</span>
-      <span>a</span>
-      <span>s</span>
-      <span>a</span>
+    <div class="title">
+      <h3>High-Performance, Scalable VMs</h3>
+      <h1>COMPUTE ENGINE</h1>
+      <h3>
+        <b>100 Gbps</b>
+        Internet connection
+      </h3>
     </div>
-
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script>
-      document.querySelectorAll(".logo-text span").forEach((letter) => {
-        letter.addEventListener("mouseenter", () => {
-          letter.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
-        });
-        letter.addEventListener("mouseleave", () => {
-          letter.style.color = "transparent";
-        });
-      });
-    </script>
-    <script type="module" src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="Welcome/js/index.js"></script>
   </body>
 </html>
