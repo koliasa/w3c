@@ -1,23 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="uk">
   <head>
-    <!--обовязково добавити сюди мета теги. таповн й опис сторінки.-->
     <meta charset="UTF-8" />
-    <title>Dell PE R750 (210-R750-8380)</title>
-    <meta name="COMPUTE ENGINE" />
-    <meta name="keywords" content="COMPUTE ENGINE, >High-Performance, Scalable VMs, 100 Gbps, Internet connection" />
-    <link rel="stylesheet" href="Welcome/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KOLIASA CONSTRUCTION</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      canvas {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <div class="title">
-      <h3>High-Performance, Scalable VMs</h3>
-      <h1>COMPUTE ENGINE</h1>
-      <h3>
-        <b>100 Gbps</b>
-        Internet connection
-      </h3>
-    </div>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="Welcome/js/index.js"></script>
+    <canvas id="pixelCanvas"></canvas>
+
+    <script>
+      const MM14_COLORS = ["#6B7D2B", "#4A5448", "#3D3D2D", "#D4C4A8"];
+
+      class CanvasManager {
+        constructor() {
+          this.canvas = document.getElementById("pixelCanvas");
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.particles = [];
+
+          this.setupResizeListener();
+          this.resize();
+          this.init();
+        }
+
+        setupResizeListener() {
+          window.addEventListener("resize", () => {
+            this.resize();
+            this.init();
+          });
+        }
+
+        resize() {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+
+          this.canvas.width = width * this.dpr;
+          this.canvas.height = height * this.dpr;
+          this.canvas.style.width = width + "px";
+          this.canvas.style.height = height + "px";
+
+          this.ctx.scale(this.dpr, this.dpr);
+          this.logicalWidth = width;
+          this.logicalHeight = height;
+        }
+
+        init() {
+          const centerX = this.logicalWidth / 2;
+          const centerY = this.logicalHeight / 2;
+
+          const fontSize = Math.max(40, Math.min(120, Math.min(this.logicalWidth, this.logicalHeight) * 0.15));
+
+          this.particles = this.generatePixelText("KOLIASA CONSTRUCTION", centerX, centerY, fontSize);
+        }
+
+        generatePixelText(text, centerX, centerY, fontSize) {
+          const offscreenCanvas = document.createElement("canvas");
+          const offscreenCtx = offscreenCanvas.getContext("2d");
+
+          offscreenCanvas.width = centerX * 3;
+          offscreenCanvas.height = centerY * 1.5;
+
+          offscreenCtx.fillStyle = "#FFFFFF";
+          offscreenCtx.font = `bold ${fontSize}px Arial, sans-serif`;
+          offscreenCtx.textAlign = "center";
+          offscreenCtx.textBaseline = "middle";
+          offscreenCtx.fillText(text, offscreenCanvas.width / 2, offscreenCanvas.height / 2);
+
+          const imageData = offscreenCtx.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+          const data = imageData.data;
+
+          const particles = [];
+          const pixelSize = Math.max(2, Math.ceil(fontSize / 20));
+
+          for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3];
+            if (alpha > 128) {
+              const pixelIndex = i / 4;
+              const x = (pixelIndex % offscreenCanvas.width) - offscreenCanvas.width / 2;
+              const y = Math.floor(pixelIndex / offscreenCanvas.width) - offscreenCanvas.height / 2;
+
+              if (Math.random() < 0.4) {
+                particles.push({
+                  x: centerX + x,
+                  y: centerY + y,
+                  size: pixelSize,
+                  color: MM14_COLORS[Math.floor(Math.random() * MM14_COLORS.length)],
+                });
+              }
+            }
+          }
+
+          return particles;
+        }
+
+        render() {
+          this.ctx.fillStyle = "#000000";
+          this.ctx.fillRect(0, 0, this.logicalWidth, this.logicalHeight);
+
+          for (let particle of this.particles) {
+            this.ctx.fillStyle = particle.color;
+            this.ctx.fillRect(
+              particle.x - particle.size / 2,
+              particle.y - particle.size / 2,
+              particle.size,
+              particle.size,
+            );
+          }
+        }
+
+        animate() {
+          this.render();
+          requestAnimationFrame(() => this.animate());
+        }
+      }
+
+      window.addEventListener("load", () => {
+        const manager = new CanvasManager();
+        manager.animate();
+      });
+    </script>
   </body>
 </html>
