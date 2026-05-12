@@ -57,7 +57,7 @@
         constructor() {
           this.canvas = document.getElementById("Koliasa");
           this.ctx = this.canvas.getContext("2d");
-          this.dpr = window.devicePixelRatio || 1;
+          this.dpr = Math.min(window.devicePixelRatio || 1, 2);
           this.particles = [];
           this.letterGroups = [];
           this.resizeTimeout = null;
@@ -104,17 +104,38 @@
           this.logicalHeight = height;
         }
 
+        calculateOptimalFontSize() {
+          const w = this.logicalWidth;
+          const h = this.logicalHeight;
+          const minDim = Math.min(w, h);
+
+          if (w < 320) return 16;
+          if (w < 360) return 20;
+          if (w < 480) return 24;
+          if (w < 600) return 32;
+          if (w < 768) return 40;
+          if (w < 1024) return 56;
+          if (w < 1440) return 72;
+          return 88;
+        }
+
+        measureTextWidth(text, fontSize) {
+          this.ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+          return this.ctx.measureText(text).width;
+        }
+
         init() {
           const centerX = this.logicalWidth / 2;
           const centerY = this.logicalHeight / 2;
-          const minDimension = Math.min(this.logicalWidth, this.logicalHeight);
 
-          const fontSize =
-            this.logicalWidth < 400
-              ? Math.max(24, minDimension * 0.12)
-              : this.logicalWidth < 768
-                ? Math.max(32, minDimension * 0.14)
-                : Math.max(40, Math.min(120, minDimension * 0.15));
+          let fontSize = this.calculateOptimalFontSize();
+          let textWidth = this.measureTextWidth("KOLIASA CONSTRUCTION", fontSize);
+          const padding = this.logicalWidth * 0.08;
+
+          while (textWidth + padding > this.logicalWidth * 0.95 && fontSize > 8) {
+            fontSize -= 2;
+            textWidth = this.measureTextWidth("KOLIASA CONSTRUCTION", fontSize);
+          }
 
           const { particles, letterGroups } = this.generatePixelText(
             "KOLIASA CONSTRUCTION",
@@ -130,12 +151,12 @@
         generatePixelText(text, centerX, centerY, fontSize) {
           const offscreenCanvas = document.createElement("canvas");
           const offscreenCtx = offscreenCanvas.getContext("2d");
-          const padding = fontSize * 2;
+          const padding = fontSize * 3;
 
           offscreenCtx.font = `bold ${fontSize}px Arial, sans-serif`;
           const metrics = offscreenCtx.measureText(text);
-          const textWidth = Math.ceil(metrics.width) + padding;
-          const textHeight = Math.ceil(fontSize * 1.4) + padding;
+          const textWidth = Math.ceil(metrics.width) + padding * 2;
+          const textHeight = Math.ceil(fontSize * 1.6) + padding * 2;
 
           offscreenCanvas.width = Math.max(1, textWidth);
           offscreenCanvas.height = Math.max(1, textHeight);
@@ -152,20 +173,9 @@
           const particles = [];
           const letterGroups = [];
 
-          const basePixelSize = fontSize / 22;
-          const pixelSize = Math.max(2, Math.min(6, Math.ceil(basePixelSize)));
+          const basePixelSize = fontSize / 20;
+          const pixelSize = Math.max(2, Math.min(8, Math.ceil(basePixelSize)));
           const skipFactor = Math.max(1, Math.floor(pixelSize / 2));
-
-          const letterBounds = [];
-          let currentX = padding / 2;
-          const spaceWidth = ctx.measureText(" ").width;
-
-          for (let i = 0; i < text.length; i++) {
-            const char = text[i];
-            const charWidth = char === " " ? spaceWidth : ctx.measureText(char).width;
-            letterBounds.push({ char, startX: currentX, width: charWidth, index: i });
-            currentX += charWidth;
-          }
 
           for (let i = 0; i < data.length; i += 4 * skipFactor) {
             const alpha = data[i + 3];
@@ -175,14 +185,6 @@
               const py = Math.floor(pixelIndex / offscreenCanvas.width);
               const x = px - offscreenCanvas.width / 2;
               const y = py - offscreenCanvas.height / 2;
-
-              let letterIdx = -1;
-              for (let b = 0; b < letterBounds.length; b++) {
-                if (px >= letterBounds[b].startX && px < letterBounds[b].startX + letterBounds[b].width) {
-                  letterIdx = b;
-                  break;
-                }
-              }
 
               if (Math.random() < 0.4) {
                 const colorIdx = Math.floor(Math.random() * MM14_COLORS.length);
@@ -196,7 +198,6 @@
                   color: MM14_COLORS[colorIdx],
                   baseColorIdx: colorIdx,
                   colorIdx: colorIdx,
-                  letterIndex: letterIdx,
                   phase: Math.random() * Math.PI * 2,
                   particlePhase: Math.random() * 1000,
                   jitter: { x: 0, y: 0 },
@@ -219,8 +220,26 @@
           }
 
           for (const p of particles) {
-            if (p.letterIndex >= 0 && p.letterIndex < letterGroups.length) {
-              letterGroups[p.letterIndex].particles.push(p);
+            let letterIdx = -1;
+            let charCount = 0;
+            let currentX = padding;
+
+            for (let i = 0; i < text.length; i++) {
+              const char = text[i];
+              const charWidth = char === " " ? ctx.measureText(" ").width : ctx.measureText(char).width;
+
+              if (
+                p.x - (centerX - offscreenCanvas.width / 2) >= currentX &&
+                p.x - (centerX - offscreenCanvas.width / 2) < currentX + charWidth
+              ) {
+                letterIdx = i;
+                break;
+              }
+              currentX += charWidth;
+            }
+
+            if (letterIdx >= 0 && letterIdx < letterGroups.length) {
+              letterGroups[letterIdx].particles.push(p);
             }
           }
 
