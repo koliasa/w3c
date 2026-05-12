@@ -2,7 +2,7 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>KOLIASA CONSTRUCTION</title>
     <style>
       * {
@@ -10,18 +10,16 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       html,
       body {
         width: 100%;
         height: 100%;
-        background: #000000;
+        background: #000;
         overflow: hidden;
         touch-action: none;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
       }
-
       body {
         display: flex;
         justify-content: center;
@@ -31,35 +29,37 @@
         -moz-user-select: none;
         -ms-user-select: none;
       }
-
       canvas {
         display: block;
         width: 100%;
         height: 100%;
         image-rendering: pixelated;
-        image-rendering: crisp-edges;
       }
     </style>
   </head>
   <body>
-    <canvas id="pixelCanvas"></canvas>
-
+    <canvas id="Koliasa"></canvas>
     <script>
-      const MM14_COLORS = ["#6B7D2B", "#4A5448", "#3D3D2D", "#D4C4A8"];
-
+      const MM14_COLORS = ["#6B7D2B", "#4A5448", "#3D3D2D", "#D4C4A8"],
+        clamp = (v, min, max) => Math.max(min, Math.min(max, v)),
+        lerp = (a, b, t) => a + (b - a) * t,
+        randRange = (min, max) => min + Math.random() * (max - min);
       class CanvasManager {
         constructor() {
-          this.canvas = document.getElementById("pixelCanvas");
+          this.canvas = document.getElementById("Koliasa");
           this.ctx = this.canvas.getContext("2d");
           this.dpr = window.devicePixelRatio || 1;
           this.particles = [];
           this.resizeTimeout = null;
-
+          this.tick = 0;
           this.setupEventListeners();
           this.resize();
           this.init();
+          setInterval(() => {
+            this.tick++;
+            this.backgroundTick();
+          }, 1e3);
         }
-
         setupEventListeners() {
           window.addEventListener("resize", () => {
             clearTimeout(this.resizeTimeout);
@@ -68,7 +68,6 @@
               this.init();
             }, 150);
           });
-
           window.addEventListener("orientationchange", () => {
             setTimeout(() => {
               this.resize();
@@ -76,111 +75,114 @@
             }, 300);
           });
         }
-
         resize() {
-          const width = window.innerWidth;
-          const height = window.innerHeight;
-
-          this.canvas.width = Math.floor(width * this.dpr);
-          this.canvas.height = Math.floor(height * this.dpr);
-          this.canvas.style.width = width + "px";
-          this.canvas.style.height = height + "px";
-
+          const w = window.innerWidth,
+            h = window.innerHeight;
+          this.canvas.width = (w * this.dpr) | 0;
+          this.canvas.height = (h * this.dpr) | 0;
+          this.canvas.style.width = `${w}px`;
+          this.canvas.style.height = `${h}px`;
           this.ctx.setTransform(1, 0, 0, 1, 0, 0);
           this.ctx.scale(this.dpr, this.dpr);
-
-          this.logicalWidth = width;
-          this.logicalHeight = height;
+          this.logicalWidth = w;
+          this.logicalHeight = h;
         }
-
         init() {
-          const centerX = this.logicalWidth / 2;
-          const centerY = this.logicalHeight / 2;
-          const minDimension = Math.min(this.logicalWidth, this.logicalHeight);
-
-          const fontSize =
-            this.logicalWidth < 400
-              ? Math.max(24, minDimension * 0.12)
-              : this.logicalWidth < 768
-                ? Math.max(32, minDimension * 0.14)
-                : Math.max(40, Math.min(120, minDimension * 0.15));
-
-          this.particles = this.generatePixelText("KOLIASA CONSTRUCTION", centerX, centerY, fontSize);
+          const cx = this.logicalWidth / 2,
+            cy = this.logicalHeight / 2,
+            mn = Math.min(this.logicalWidth, this.logicalHeight),
+            fs =
+              this.logicalWidth < 400
+                ? clamp(mn * 0.12, 24, Infinity)
+                : this.logicalWidth < 768
+                  ? clamp(mn * 0.14, 32, Infinity)
+                  : clamp(Math.min(mn * 0.15, 120), 40, Infinity);
+          this.particles = this.generatePixelText("KOLIASA CONSTRUCTION", cx, cy, fs);
         }
-
-        generatePixelText(text, centerX, centerY, fontSize) {
-          const offscreenCanvas = document.createElement("canvas");
-          const offscreenCtx = offscreenCanvas.getContext("2d");
-          const padding = fontSize * 2;
-
-          offscreenCtx.font = `bold ${fontSize}px Arial, sans-serif`;
-          const metrics = offscreenCtx.measureText(text);
-          const textWidth = Math.ceil(metrics.width) + padding;
-          const textHeight = Math.ceil(fontSize * 1.4) + padding;
-
-          offscreenCanvas.width = Math.max(1, textWidth);
-          offscreenCanvas.height = Math.max(1, textHeight);
-
-          const ctx = offscreenCanvas.getContext("2d");
-          ctx.fillStyle = "#FFFFFF";
-          ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        generatePixelText(text, cx, cy, fs) {
+          const oc = document.createElement("canvas"),
+            octx = oc.getContext("2d"),
+            pad = fs * 2;
+          octx.font = `bold ${fs}px Arial,sans-serif`;
+          const tw = Math.ceil(octx.measureText(text).width) + pad,
+            th = Math.ceil(fs * 1.4) + pad;
+          oc.width = Math.max(1, tw);
+          oc.height = Math.max(1, th);
+          const ctx = oc.getContext("2d");
+          ctx.fillStyle = "#FFF";
+          ctx.font = `bold ${fs}px Arial,sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(text, offscreenCanvas.width / 2, offscreenCanvas.height / 2);
-
-          const imageData = ctx.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height);
-          const data = imageData.data;
-          const particles = [];
-
-          const basePixelSize = fontSize / 22;
-          const pixelSize = Math.max(2, Math.min(6, Math.ceil(basePixelSize)));
-          const skipFactor = Math.max(1, Math.floor(pixelSize / 2));
-
-          for (let i = 0; i < data.length; i += 4 * skipFactor) {
-            const alpha = data[i + 3];
-            if (alpha > 128) {
-              const pixelIndex = i / 4;
-              const x = (pixelIndex % offscreenCanvas.width) - offscreenCanvas.width / 2;
-              const y = Math.floor(pixelIndex / offscreenCanvas.width) - offscreenCanvas.height / 2;
-
-              if (Math.random() < 0.4) {
+          ctx.fillText(text, oc.width / 2, oc.height / 2);
+          const { data, width, height } = ctx.getImageData(0, 0, oc.width, oc.height),
+            particles = [],
+            bps = fs / 22,
+            ps = clamp((bps + 0.5) | 0, 2, 6),
+            sf = Math.max(1, (ps / 2) | 0);
+          for (let i = 0, len = data.length; i < len; i += 4 * sf) {
+            if (data[i + 3] > 128) {
+              const pi = i / 4,
+                x = (pi % width) - width / 2,
+                y = ((pi / width) | 0) - height / 2;
+              Math.random() < 0.4 &&
                 particles.push({
-                  x: centerX + x,
-                  y: centerY + y,
-                  size: pixelSize,
-                  color: MM14_COLORS[Math.floor(Math.random() * MM14_COLORS.length)],
+                  x: cx + x,
+                  y: cy + y,
+                  baseX: cx + x,
+                  baseY: cy + y,
+                  size: ps,
+                  color: MM14_COLORS[(Math.random() * MM14_COLORS.length) | 0],
+                  targetX: cx + x,
+                  targetY: cy + y,
                 });
-              }
             }
           }
-
           return particles;
         }
-
-        render() {
-          this.ctx.fillStyle = "#000000";
-          this.ctx.fillRect(0, 0, this.logicalWidth, this.logicalHeight);
-
-          for (let particle of this.particles) {
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fillRect(
-              particle.x - particle.size / 2,
-              particle.y - particle.size / 2,
-              particle.size,
-              particle.size,
-            );
+        backgroundTick() {
+          const pc = this.particles.length,
+            rc = Math.max(1, (pc * 0.03) | 0);
+          for (let i = 0; i < rc; i++) {
+            const p = this.particles[(Math.random() * pc) | 0],
+              ci = MM14_COLORS.indexOf(p.color),
+              sh = 1 + ((Math.random() * 2) | 0);
+            p.color = MM14_COLORS[(ci + sh) % MM14_COLORS.length];
           }
+          const nc = Math.max(1, (pc * 0.02) | 0);
+          for (let i = 0; i < nc; i++) {
+            const p = this.particles[(Math.random() * pc) | 0],
+              ofs = p.size * 0.3;
+            p.targetX = p.baseX + (Math.random() - 0.5) * ofs;
+            p.targetY = p.baseY + (Math.random() - 0.5) * ofs;
+          }
+          this.tick % 5 === 0 &&
+            (() => {
+              const rt = Math.max(1, (pc * 0.05) | 0);
+              for (let i = 0; i < rt; i++) {
+                const p = this.particles[(Math.random() * pc) | 0];
+                p.targetX = p.baseX;
+                p.targetY = p.baseY;
+              }
+            })();
         }
-
+        render() {
+          this.ctx.fillStyle = "#000";
+          this.ctx.fillRect(0, 0, this.logicalWidth, this.logicalHeight);
+          this.particles.forEach((p) => {
+            p.x = lerp(p.x, p.targetX, 0.08);
+            p.y = lerp(p.y, p.targetY, 0.08);
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          });
+        }
         animate() {
           this.render();
           requestAnimationFrame(() => this.animate());
         }
       }
-
       window.addEventListener("load", () => {
-        const manager = new CanvasManager();
-        manager.animate();
+        const m = new CanvasManager();
+        m.animate();
       });
     </script>
   </body>
