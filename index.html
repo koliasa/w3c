@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Title & SEO Description -->
+    <title>Коляса констракшн менеджмент</title>
+    <meta
+      name="description"
+      content="Коляса Констракшн Менеджмент — інтегратор сучасних технологій та прогресивних інформаційних рішень для оптимізації та автоматизації процесів будь-якої складності." />
+    <meta
+      name="keywords"
+      content="Коляса Констракшн Менеджмент, інформаційні технології, інтеграція технологій, автоматизація процесів, IT рішення, Україна" />
+    <link rel="canonical" href="https://koliasa.com/" />
+
+    <!-- Індексація та безпека (захист від витоку даних та зайвого парсингу) -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="format-detection" content="telephone=no, email=no, address=no" />
+
+    <!-- Open Graph (Facebook, LinkedIn, Telegram, Viber, Signal) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://koliasa.com/" />
+    <meta property="og:title" content="КОЛЯСА КОНСТРАКШН | Прогресивні інформаційні технології" />
+    <meta
+      property="og:description"
+      content="Інтегратор сучасних технологій та прогресивних інформаційних рішень в будь-які процеси." />
+    <meta property="og:image" content="https://koliasa.com/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:site_name" content="Коляса Констракшн Менеджмент" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://koliasa.com/" />
+    <meta name="twitter:title" content="КОЛЯСА КОНСТРАКШН | Прогресивні інформаційні технології" />
+    <meta
+      name="twitter:description"
+      content="Інтегратор сучасних технологій та прогресивних інформаційних рішень в будь-які процеси." />
+    <meta name="twitter:image" content="https://koliasa.com/assets/og-image.jpg" />
+
+    <!-- Мобільні налаштування та геолокація -->
+    <meta name="application-name" content="Koliasa CM" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="geo.region" content="UA-61" />
+    <meta name="geo.placename" content="Ternopil" />
+    <meta name="language" content="Ukrainian" />
+
+    <!-- Шрифти Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+
+    <!-- Структуровані дані JSON-LD (Schema.org для пошукових систем) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Коляса Констракшн Менеджмент",
+        "alternateName": "Koliasa Construction Management",
+        "url": "https://koliasa.com/",
+        "logo": "https://koliasa.com/assets/logo.png",
+        "description": "Інтегратор сучасних рішень і технологій в будь-які процеси, прогресивні інформаційні технології.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Тернопіль",
+          "addressCountry": "UA"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Customer Support",
+          "availableLanguage": ["Ukrainian"]
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --bg: #0a0c0a;
+        --ink1: #222323;
+        --ink2: #5a5f52;
+        --paper: #e8e4d0;
+        --green: #7fd67f;
+        --green-dark: #2f6b3a;
+        --amber: #d9b053;
+        --teal: #4a8c8c;
+        --purple: #6d5a8c;
+        --red: #c9564a;
+        --glow: 0 0 6px currentColor;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        overflow: hidden;
+        font-family: "VT323", monospace;
+        cursor: crosshair;
+      }
+
+      canvas#matrix {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.35;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 0px,
+          rgba(0, 0, 0, 0) 2px,
+          rgba(0, 0, 0, 0.18) 3px,
+          rgba(0, 0, 0, 0.18) 4px
+        );
+        mix-blend-mode: overlay;
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        z-index: 4;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.85) 100%);
+      }
+
+      .noise-flicker {
+        position: fixed;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.015);
+        animation: flick 0.15s steps(2) infinite;
+      }
+      @keyframes flick {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      main {
+        position: relative;
+        z-index: 10;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 4vw;
+      }
+
+      .tag {
+        font-family: "VT323", monospace;
+        font-size: clamp(10px, 1.6vw, 16px);
+        letter-spacing: 0.4em;
+        color: var(--teal);
+        text-shadow: var(--glow);
+        margin-bottom: clamp(12px, 3vh, 28px);
+        opacity: 0.85;
+      }
+      .tag::before {
+        content: "[ ";
+      }
+      .tag::after {
+        content: " ]";
+      }
+
+      .title-wrap {
+        position: relative;
+        line-height: 1.35;
+      }
+
+      h1 {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(20px, 6.2vw, 78px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        color: var(--paper);
+        text-transform: uppercase;
+        position: relative;
+        display: inline-block;
+        text-shadow:
+          0 0 2px var(--paper),
+          0 0 18px var(--green),
+          3px 0 0 rgba(201, 86, 74, 0.55),
+          -3px 0 0 rgba(74, 140, 140, 0.55);
+      }
+
+      h1 .line {
+        display: block;
+      }
+
+      h1 .accent {
+        color: var(--green);
+        text-shadow:
+          0 0 4px var(--green),
+          0 0 24px var(--green);
+      }
+
+      /* glitch layers */
+      h1::before,
+      h1::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        white-space: pre-line;
+        overflow: hidden;
+      }
+      h1::before {
+        color: var(--red);
+        opacity: 0.7;
+        animation: glitchTop 3.2s infinite linear alternate-reverse;
+      }
+      h1::after {
+        color: var(--teal);
+        opacity: 0.7;
+        animation: glitchBot 2.6s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitchTop {
+        0% {
+          clip-path: inset(0 0 85% 0);
+          transform: translate(-2px, -1px);
+        }
+        10% {
+          clip-path: inset(10% 0 60% 0);
+          transform: translate(2px, 1px);
+        }
+        20% {
+          clip-path: inset(40% 0 40% 0);
+          transform: translate(-1px, 2px);
+        }
+        30% {
+          clip-path: inset(70% 0 5% 0);
+          transform: translate(1px, -2px);
+        }
+        40% {
+          clip-path: inset(20% 0 65% 0);
+          transform: translate(-2px, 0);
+        }
+        50% {
+          clip-path: inset(50% 0 10% 0);
+          transform: translate(2px, 0);
+        }
+        60% {
+          clip-path: inset(5% 0 80% 0);
+          transform: translate(0, 2px);
+        }
+        70% {
+          clip-path: inset(65% 0 15% 0);
+          transform: translate(0, -1px);
+        }
+        80% {
+          clip-path: inset(30% 0 50% 0);
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          clip-path: inset(75% 0 2% 0);
+          transform: translate(1px, -1px);
+        }
+        100% {
+          clip-path: inset(0 0 90% 0);
+          transform: translate(0, 0);
+        }
+      }
+      @keyframes glitchBot {
+        0% {
+          clip-path: inset(85% 0 0 0);
+          transform: translate(2px, 1px);
+        }
+        15% {
+          clip-path: inset(55% 0 15% 0);
+          transform: translate(-2px, -1px);
+        }
+        30% {
+          clip-path: inset(20% 0 55% 0);
+          transform: translate(1px, 2px);
+        }
+        45% {
+          clip-path: inset(70% 0 5% 0);
+          transform: translate(-1px, -2px);
+        }
+        60% {
+          clip-path: inset(10% 0 70% 0);
+          transform: translate(2px, 0);
+        }
+        75% {
+          clip-path: inset(45% 0 25% 0);
+          transform: translate(-2px, 1px);
+        }
+        90% {
+          clip-path: inset(60% 0 10% 0);
+          transform: translate(1px, -1px);
+        }
+        100% {
+          clip-path: inset(85% 0 0 0);
+          transform: translate(0, 0);
+        }
+      }
+
+      .sub {
+        margin-top: clamp(18px, 4vh, 36px);
+        font-family: "VT323", monospace;
+        font-size: clamp(12px, 2vw, 20px);
+        color: var(--ink2);
+        letter-spacing: 0.15em;
+      }
+      .sub .cursor {
+        display: inline-block;
+        width: 0.6em;
+        background: var(--green);
+        color: transparent;
+        animation: blink 1s steps(1) infinite;
+        margin-left: 2px;
+      }
+      @keyframes blink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .coords {
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        font-family: "VT323", monospace;
+        font-size: clamp(9px, 1.2vw, 13px);
+        color: var(--purple);
+        letter-spacing: 0.15em;
+        opacity: 0.75;
+        pointer-events: none;
+      }
+
+      .frame {
+        position: fixed;
+        inset: 14px;
+        z-index: 9;
+        border: 1px solid rgba(127, 214, 127, 0.25);
+        pointer-events: none;
+      }
+      .frame::before,
+      .frame::after {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--green);
+        opacity: 0.8;
+      }
+      .frame::before {
+        top: -2px;
+        left: -2px;
+        border-right: none;
+        border-bottom: none;
+      }
+      .frame::after {
+        bottom: -2px;
+        right: -2px;
+        border-left: none;
+        border-top: none;
+      }
+
+      @media (max-width: 480px) {
+        .coords {
+          display: none;
+        }
+        .frame {
+          inset: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrix"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <div class="noise-flicker"></div>
+    <div class="frame"></div>
+
+    <div class="coords">
+      <span id="clk">00:00:00</span>
+      <span>SYS://Exatank.Pegasus.V2.EXE</span>
+      <span>СТАТУС: ОНЛАЙН</span>
+    </div>
+
+    <main>
+      <!--<div class="tag">будівництво майбутнього</div>-->
+      <div class="title-wrap">
+        <h1
+          data-text="КОЛЯСА
+КОНСТРАКШН">
+          КОЛЯСА
+          <span class="accent"></span>
+          <span class="line accent">КОНСТРАКШН</span>
+        </h1>
+      </div>
+      <div class="sub">
+        ПРОГРЕСИВНІ ІНФОРМАЦІЙНІ ТЕХНОЛОГІЇ
+        <span class="cursor">_</span>
+      </div>
+    </main>
+
+    <script>
+      const canvas = document.getElementById("matrix");
+      const ctx = canvas.getContext("2d");
+      let w, h, cols, drops;
+
+      const glyphs = "КОЛЯСА КОНСТРАКШН 101010101010".split("");
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        const fontSize = 14;
+        cols = Math.floor(w / fontSize);
+        drops = new Array(cols).fill(0).map(() => (Math.random() * h) / fontSize);
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      const palette = ["#7fd67f", "#4a8c8c", "#d9b053", "#6d5a8c"];
+
+      function draw() {
+        ctx.fillStyle = "rgba(10,12,10,0.12)";
+        ctx.fillRect(0, 0, w, h);
+        const fontSize = 14;
+        ctx.font = fontSize + "px monospace";
+        for (let i = 0; i < cols; i++) {
+          const text = glyphs[Math.floor(Math.random() * glyphs.length)];
+          ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > h && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+      setInterval(draw, 60);
+
+      function tick() {
+        const d = new Date();
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        const ss = String(d.getSeconds()).padStart(2, "0");
+        document.getElementById("clk").textContent = `${hh}:${mm}:${ss}`;
+      }
+      setInterval(tick, 1000);
+      tick();
+    </script>
+  </body>
+</html>
